@@ -1,0 +1,278 @@
+SQL case-based assignment for a Retail Store Analysis.
+
+#####################################################################################
+
+show databases;
+
+########################## Creating the New DATABASE #################################
+
+
+create database Retail_Store;
+
+use Retail_Store;
+
+
+########################## Creating the structure of Tables #################################
+
+
+create table Customer_table(
+    -> customer_id INT PRIMARY KEY,
+    -> first_name varchar(100),
+    -> last_name varchar(100),
+    -> email varchar(100),
+    -> phone varchar(20),
+    -> address TEXT,
+    -> join_date DATE);
+
+
+create table Product_table(
+    -> product_id INT PRIMARY KEY,
+    -> product_name varchar(100),
+    -> category varchar(50),
+    -> price DECIMAL(10,2),
+    -> stock_quantity INT);
+
+
+create table Order_table(
+    -> order_id INT PRIMARY KEY,
+    -> customer_id INT,
+    -> order_date DATE,
+    -> total_amount DECIMAL(10,2),
+    -> order_status varchar(20),
+    -> FOREIGN KEY (customer_id) REFERENCES customer_table(customer_id)
+    -> );
+
+
+create table Order_details(
+    -> order_detail_id INT PRIMARY KEY,
+    -> order_id INT,
+    -> product_id INT,
+    -> quantity INT,
+    -> unit_price DECIMAL(10,2),
+    -> FOREIGN KEY (order_id) REFERENCES order_table(order_id),
+    -> FOREIGN KEY (product_id) REFERENCES product_table(product_id)
+    -> );
+
+
+create table Payment_table(
+    -> payment_id INT PRIMARY KEY,
+    -> order_id INT,
+    -> payment_date DATE,
+    -> payment_amount DECIMAL(10,2),
+    -> payment_method varchar(20),
+    -> FOREIGN KEY(order_id) REFERENCES order_table(order_id)
+    -> );
+
+
+####################################### inserting the values #############################################
+
+
+desc customer_table;
+
+INSERT INTO customer_table(customer_id,first_name,last_name,email,phone,address,join_date)
+    -> VALUES(301,'Ram','Mandloi','ram011mandloi@gmail.com',987654789,'12,Bhawarkua,Indore','2021/04/14');
+
+INSERT INTO customer_table(customer_id,first_name,last_name,email,phone,address,join_date)
+    -> VALUES(302,'Shyam','Mangal','shyam022mangal@gmail.com',887654788,'22,Navlakha,Indore','2022/08/04');
+
+INSERT INTO customer_table(customer_id,first_name,last_name,email,phone,address,join_date)
+    -> VALUES(303,'Karan','Dharse','kdharse47@gmail.com',777654714,'47,GPO,Indore','2018/12/31');
+
+INSERT INTO customer_table(customer_id,first_name,last_name,email,phone,address,join_date)
+    -> VALUES(304,'Sumit','Sharma','sumit1212@gmail.com',8747654719,'A2,Shivaji Vatika,Indore','2019/10/03');
+
+INSERT INTO customer_table(customer_id,first_name,last_name,email,phone,address,join_date)
+    -> VALUES(305,'Vinay','Agrawal','vinayagar@gmail.com',6474765477,'B7,Geeta Bhawan,Indore','2025/01/03');
+
+INSERT INTO customer_table( customer_id,first_name,last_name,email,phone,address,join_date) VALUES
+    -> (306,'Nilam','Sarode','nilam212sar@yahoo.com',6575474533,'W2,Old Palasia,Indore','2023/12/25'),
+    -> (307,'Mangla','Jaiswal','mangal786jai@gmail.com',6665474534,'Z14,New Palasia,Indore','2021/01/05'),
+    -> (308,'Ankit','Nagar','anki990nagar@gmail.com',7575894210,'P01,LIG,Indore','2024/05/17')
+    -> ;
+
+select * from customer_table;
+
+
+#####################################################################
+
+
+desc product_table;
+
+INSERT INTO product_table(product_id,product_name,category,price,stock_quantity) VALUES
+    -> (6201,'Milk','Dairy',65,50),
+    -> (6202,'Curd','Dairy',210,25),
+    -> (6203,'Lays','Snacks',20,40),
+    -> (6204,'Fish','Sea Food',100,40),
+    -> (6205,'Oreo','Snacks',40,30),
+    -> (6206,'Kurkure','Snacks',20,50),
+    -> (6207,'Balaji','Snacks',10,100),
+    -> (6208,'Bread','Dairy',35,15),
+    -> (6209,'Oats','Breakfast',70,15),
+    -> (6210,'Corn','Breakfast',65,10),
+    -> (6211,'Resin','Dry Fruit',50,10)
+    -> ;
+
+SELECT * from product_table;
+
+
+####################################################################################
+
+
+desc order_table;
+
+INSERT INTO order_table( order_id,customer_id,order_date,total_amount,order_status) VALUES
+    -> (9011,302,'2025/01/03',40,'Cancelled'),
+    -> (9012,302,'2025/01/03',300,'Shipped'),
+    -> (9013,304,'2025/02/14',300,'Shipped'),
+    -> (9014,305,'2025/02/14',340,'Shipped'),
+    -> (9015,301,'2025/03/11',540,'Pending'),
+    -> (9016,303,'2025/03/12',500,'Pending'),
+    -> (9017,308,'2024/05/17',740,'Cancelled'),
+    -> (9018,307,'2021/04/27',900,'Shipped'),
+    -> (9019,304,'2025/02/11',665,'Pending'),
+    -> (9020,302,'2023/09/21',580,'Shipped')
+    -> ;
+
+select * from order_table;
+
+
+#####################################################################################
+
+
+desc order_details;
+
+INSERT INTO order_details (order_detail_id,order_id,product_id,quanti
+ty,unit_price)VALUES
+    -> (2101,9012,6204,3,100),
+    -> (2102,9014,6203,2,20),
+    -> (2103,9014,6204,3,100),
+    -> (2104,9013,6204,2,100),
+    -> (2105,9013,6205,2,40),
+    -> (2106,9013,6206,1,20),
+    -> (2107,9015,6202,2,210),
+    -> (2108,9015,6204,1,100),
+    -> (2109,9015,6206,1,20),
+    -> (2110,9018,6204,9,100),
+    -> (2111,9016,6211,10,50),
+    -> (2112,9019,6204,6,100),
+    -> (2113,9019,6201,1,65),
+    -> (2114,9020,6203,29,20)
+    -> ;
+
+select * from order_details;
+
+
+#######################################################################################
+
+
+desc Payment_table;
+
+INSERT INTO payment_table (payment_id,order_id,payment_date,payment_amount,payment_method) VALUES
+    -> (1,9012,'2025/01/04',300,'Credit_Card'),
+    -> (2,9016,'2025/03/12',500,'Google Pay'),
+    -> (3,9013,'2025/02/14',300,'PayPal'),
+    -> (4,9014,'2025/02/14',340,'Google Pay'),
+    -> (5,9015,'2025/03/13',540,'PayPal'),
+    -> (6,9020,'2023/09/25',580,'Credit_Card'),
+    -> (7,9018,'2021/04/27',900,'PayPal'),
+    -> (8,9019,'2025/02/12',600,'Google Pay'),
+    -> (9,9019,'2025/02/13',65,'Credit_Card')
+    -> ;
+
+select * from payment_table;
+
+
+#######################################################################################################
+
+
+SQL Queries for the Case Study
+
+
+########################################################################################################
+
+
+1. Find the Total Number of Orders for Each Customer 
+
+    select c.first_name, count(o.order_id) AS Total_Orders
+    -> from customer_table c
+    -> join order_table o ON c.customer_id = o.customer_id
+    -> Group By c.customer_id,c.first_name;
+
+
+2. Find the Total Sales Amount for Each Product (Revenue per Product) 
+
+    select p.product_name, SUM(od.quantity) AS Total_Sales
+    -> from product_table p
+    -> join order_details od ON p.product_id = od.product_id
+    -> GROUP BY p.product_id,p.product_name;
+
+
+3. Find the Most Expensive Product Sold 
+
+    select p.product_name, MAX(od.unit_price) AS MOST_EXPENSIVE_PRODUCT_SOLD
+    -> from product_table p
+    -> left Join order_details od ON p.product_id = od.product_id
+    -> Group By p.product_name
+    -> Order By MOST_EXPENSIVE_PRODUCT_SOLD DESC
+    -> LIMIT 1;
+
+
+4. Get the List of Customers Who Have Placed Orders in the Last 30 Days 
+
+    select DISTINCT c.first_name, o.order_date
+    -> from order_table o
+    -> join customer_table c ON c.customer_id = o.customer_id
+    -> WHERE o.order_date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+    -> ORDER BY o.order_date DESC;
+
+
+5. Calculate the Total Amount Paid by Each Customer 
+
+    select c.customer_id, c.first_name, SUM(p.payment_amount)
+    -> from customer_table c
+    -> join order_table o ON c.customer_id = o.customer_id
+    -> join payment_table p ON p.order_id = o.order_id
+    -> GROUP BY c.customer_id;
+
+
+6. Get the Number of Products Sold by Category 
+
+    select p.category, SUM(od.quantity) AS NO_OF_PRODUCT_SOLD
+    -> from product_table p
+    -> left join order_details od ON od.product_id = p.product_id
+    -> Group by p.category;
+
+
+7. List All Orders That Are Pending (i.e., Orders that haven't been shipped yet) 
+
+    SELECT o.order_id,c.first_name
+    -> from order_table o
+    -> join customer_table c ON c.customer_id = o.customer_id
+    -> WHERE o.order_status = 'Pending';
+
+
+8. Find the Average Order Value (Total Order Amount / Number of Orders) 
+
+    select SUM(total_amount) / Count(order_id) AS Average_Order_Value
+    -> from order_table;
+
+
+9. List the Top 5 Customers Who Have Spent the Most Money 
+
+    select c.customer_id,c.first_name, SUM(p.payment_amount) AS MOST_SPENT_MONEY
+    -> from payment_table p
+    -> left join order_table o ON p.order_id = o.order_id
+    -> left join customer_table c ON o.customer_id = c.customer_id
+    -> GROUP BY c.customer_id, c.first_name
+    -> ORDER BY MOST_SPENT_MONEY DESC
+    -> LIMIT 5;`
+
+
+10. Find the Products That Have Never Been Sold 
+
+    select p.product_id,p.product_name
+    -> from product_table p
+    -> left join order_details od ON p.product_id = od.product_id
+    -> where od.product_id IS NULL;
+
+##################################################################################################
